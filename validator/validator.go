@@ -35,7 +35,7 @@ func Validate(buffer string) bool {
 			}
 			stack.PushFront(value)
 			prevValue = value
-		} else {
+		} else if stack.Len() > 0 {
 			e := stack.Front()
 			stack.Remove(e)
 			if stack.Len() > 0 {
