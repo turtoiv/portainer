@@ -3,11 +3,13 @@ I)Setup the application
 1)Run the application: 
 
 go build
+
 validator.exe containerrepresentation
 
 2)Run the tests:
 
 cd validator
+
 go test
 
 II)Algorithm
