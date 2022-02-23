@@ -1,27 +1,28 @@
 package validator
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
-func TestValidatorWithSuccess(t *testing.T) {
-
-	res := Validate("{{}()[{}]}")
-	if res != true {
-		t.Logf("Wanted true but got %t", res)
-		t.Fail()
+func TestValidator(t *testing.T) {
+	tests := map[string]struct {
+		input string
+		want  bool
+	}{
+		"empty":            {input: "", want: false},
+		"invalid_start":    {input: "}[]{}", want: false},
+		"invalid_end":      {input: "{[]}(", want: false},
+		"invalid_sequence": {input: "{{[}]}", want: false},
+		"valid":            {input: "{()[]}{()}", want: true},
 	}
 
-	res = Validate("{()[]{}}")
-	if res != true {
-		t.Logf("Wanted true but got %t", res)
-		t.Fail()
-	}
-}
-
-func TestValidatorWithError(t *testing.T) {
-
-	res := Validate("{]}()")
-	if res != false {
-		t.Logf("Wanted false but got %t", res)
-		t.Fail()
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			got := Validate(tc.input)
+			if !reflect.DeepEqual(tc.want, got) {
+				t.Fatalf("expected: %v, got: %v", tc.want, got)
+			}
+		})
 	}
 }
